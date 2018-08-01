@@ -5,6 +5,7 @@ async function main() {
   const personNumber = process.argv[2]
   if (!personNumber) throw new Error(helpMessage())
 
+  // Workaraound: doesn't work when headless 
   const browser = await puppeteer.launch({headless: false})
 
   try {
