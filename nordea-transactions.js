@@ -20,7 +20,7 @@ async function main() {
     console.error(error.stack)
   } 
   
-  browser.close()
+  await browser.close()
 }
 
 function helpMessage()
