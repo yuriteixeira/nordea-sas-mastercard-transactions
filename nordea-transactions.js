@@ -25,7 +25,7 @@ async function main() {
 
 function helpMessage()
 {
-  return 'Usage: example.js <your-host:debugport>'
+  return 'Usage: node nordea-transactions.js <your-host:debugport>'
 }
 
 async function start(browser) {
