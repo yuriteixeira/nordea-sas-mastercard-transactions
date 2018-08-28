@@ -136,8 +136,7 @@ function isTransactionNotInYnab(transaction, ynabTransactions) {
 }
 
 function isTransactionAlreadyInYnab(transaction, ynabTransactions) {
-  const filtered = ynabTransactions.filter(ynabTransaction => areSameTransaction(transaction, ynabTransaction))
-  return filtered.length > 0
+  return ynabTransactions.some(ynabTransaction => areSameTransaction(transaction, ynabTransaction))
 }
 
 function areSameTransaction(cardTransaction, ynabTransaction) {
