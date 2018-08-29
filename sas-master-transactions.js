@@ -84,9 +84,10 @@ function extractTransactions() {
 }
 
 async function getTransactionsToBeAddedToYnab(transactions, budgetId, accountId) {
-  const earliestDate = transactions.reduce(getEarliestDate(), new Date());
+  const earliestDateUTC = transactions.reduce(getEarliestDate(), new Date());
+  const earliestFullDate = earliestDateUTC.substring(0, earliestDateUTC.indexOf('T'))
 
-  const ynabTransactions = await getYnabTransactions(budgetId, accountId, earliestDate)
+  const ynabTransactions = await getYnabTransactions(budgetId, accountId, earliestFullDate)
   return transactions.filter(transaction => isTransactionNotInYnab(transaction, ynabTransactions))
 
   function getEarliestDate() {
@@ -127,7 +128,7 @@ async function addTransactionsToYnab(transactions, budgetId) {
 }
 
 async function getYnabTransactions(budgetId, accountId, earliestDate) {
-  const transactions = await ynabAPI.transactions.getTransactions(budgetId, accountId, earliestDate)
+  const transactions = await ynabAPI.transactions.getTransactionsByAccount(budgetId, accountId, earliestDate)
   return transactions.data.transactions
 }
 
@@ -148,7 +149,7 @@ function areSameTransaction(cardTransaction, ynabTransaction) {
   const cardTransactionDate = new Date(cardTransaction.date)
   const ynabTransactionDate = new Date(ynabTransaction.date)
   const hasSameDate = cardTransactionDate.getMonth() === ynabTransactionDate.getMonth()
-    && cardTransactionDate.getDay() === ynabTransactionDate.getDay()
+    && cardTransactionDate.getDate() === ynabTransactionDate.getDate()
 
   const cardTransactionAmount = -1 * parseFloat(cardTransaction.amount);
   const ynabTransactionAmount = parseFloat(ynabTransaction.amount) / 1000;
