@@ -119,7 +119,7 @@ function areSameTransaction(bankTransaction, ynabTransaction) {
     bankTransactionDate.getMonth() === ynabTransactionDate.getMonth()
     && bankTransactionDate.getDate() === ynabTransactionDate.getDate()
 
-  const bankTransactionAmount = -1 * parseFloat(bankTransaction.amount)
+  const bankTransactionAmount = parseFloat(bankTransaction.amount)
   const ynabTransactionAmount = parseFloat(ynabTransaction.amount) / 1000
 
   // Sometimes the ynab amount has a rounding problem, so we fix by looking at the absolute differente
