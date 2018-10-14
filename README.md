@@ -1,6 +1,6 @@
 # Nordea and SAS Mastercard transactions
 
-This node script will fetch those transactions for you and either send it to ynab through its API (only sas mastercard supports this for now) or output a json (nordea), so you import this data.
+This node script will fetch those transactions for you and send it to YNAB through its API
 
 ## Before using...
 
@@ -13,8 +13,10 @@ See how to get those here: https://api.youneedabudget.com
 # checkout the repo, and inside your working dir, do:
 
 npm install # first time only
+
 node sas-master-transactions.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> 
 
+node nordea.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
 ```
 
 ## Requirements
