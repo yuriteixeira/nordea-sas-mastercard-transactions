@@ -141,7 +141,7 @@ function buildYnabPayload(transactions, accountId, allowSendAsCleared = false) {
         'memo': null,
         'cleared': (allowSendAsCleared && transaction.isCleared ? 'cleared' : 'uncleared'),
         'approved': false,
-        'flag_color': null,
+        'flag_color': 'orange',
         'import_id': null
       }
     })
