@@ -14,9 +14,9 @@ See how to get those here: https://api.youneedabudget.com
 
 npm install # first time only
 
-node sas-master-transactions.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> 
+node bin/sas-master-to-ynab.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> 
 
-node nordea-transactions.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
+node bin/nordea-to-ynab.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
 ```
 
 ## Requirements
