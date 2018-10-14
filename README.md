@@ -16,7 +16,7 @@ npm install # first time only
 
 node sas-master-transactions.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> 
 
-node nordea.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
+node nordea-transactions.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
 ```
 
 ## Requirements
