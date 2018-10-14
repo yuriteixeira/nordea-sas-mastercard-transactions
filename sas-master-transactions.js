@@ -17,7 +17,7 @@ async function main() {
     ynabApi = new ynab.API(accessToken)
 
     // Workaround: doesn't work when headless 
-    browser = await puppeteer.launch({ headless: false })
+    browser = await puppeteer.launch({ headless: true })
 
     await start(browser)
       .then((page) => setPersonNumber(personNumber, page))
@@ -39,16 +39,14 @@ function helpMessage() {
 async function start(browser) {
   console.warn('>>> Open BankID to authorise (will timeout in 30s)')
   const page = await browser.newPage()
-  await page.goto('https://secure.sebkort.com/nis/m/sase/external/initEidLogin?method=sbid-remote-seb')
-  await page.waitForSelector('.id-number-input')
+  await page.goto('https://secure.sebkort.com/nis/m/sase/external/initEidLogin?method=sbid-remote-seb', {waitUntil: 'networkidle0'})
   return page
 }
 
 async function setPersonNumber(personNumber, page) {
   const inputField = await page.$('.id-number-input')
-
-  // Workaround for input problems (remove the +0 or the delay and you will see...)
-  await inputField.type('0' + personNumber, { delay: 100 })
+  await inputField.focus()
+  await inputField.type(personNumber)
   await inputField.press('Enter')
   await page.waitForSelector('section.overview')
   return page
