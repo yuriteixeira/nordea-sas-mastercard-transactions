@@ -1,6 +1,17 @@
-# Nordea and SAS Mastercard transactions
+# YNAB Transactions Importer 
 
 This node script will fetch those transactions for you and send it to YNAB through its API
+
+## Supported sources
+
+### Credit cards
+
+* SAS Mastercard
+
+### Banks
+
+* Nordea
+
 
 ## Before using...
 
