@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 
 express()
   .use(bodyParser.json())
+  .use(cors)
   .get('/', (req, res) => res.send('Tjena!'))
   .post('/transactions', sendTransactionsToYnab)
   .listen(process.env.PORT || 5000)
@@ -29,4 +30,10 @@ async function sendTransactionsToYnab(req, res) {
   await browser.close()
 
   res.send(sourceTransactions)
+}
+
+function cors (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 }
