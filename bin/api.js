@@ -37,12 +37,15 @@ async function getTransactionsFromSource(req, res) {
   const adapter = require(`../lib/${chosenAdapter}`)
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 
-  const sourceTransactions = await adapter.getSourceTransactions(browser, personNumber)
-  const filteredTransactions = await adapter.filterTransactionsNotSent(ynabApi, sourceTransactions, ynabBudgetId, ynabAccountId, startDate)
+  try {
+    const sourceTransactions = await adapter.getSourceTransactions(browser, personNumber)
+    const filteredTransactions = await adapter.filterTransactionsNotSent(ynabApi, sourceTransactions, ynabBudgetId, ynabAccountId, startDate)
+    res.send(filteredTransactions)
+  } catch (error) {
+    res.status(500).end()
+  }
 
-  browser.close()
-
-  res.send(filteredTransactions)
+  if (browser) browser.close()
 }
 
 async function sendTransactionsToYnab(req, res) {
