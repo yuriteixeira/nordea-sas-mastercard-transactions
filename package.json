@@ -6,8 +6,14 @@
     "puppeteer": "^1.6.1",
     "ynab": "^1.5.0"
   },
-
   "engines": {
     "node": "8.11.3"
+  },
+  "scripts": {
+    "dev": "nodemon --inspect ./bin/api.js",
+    "start": "node ./bin/api.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5"
   }
 }
