@@ -21,13 +21,31 @@ See how to get those here: https://api.youneedabudget.com
 ## Usage
 
 ```
-# checkout the repo, and inside your working dir, do:
+### Checkout the repo, and inside your working dir, do:
 
-npm install # first time only
+# first time only
+npm install 
 
-node bin/sas-master-to-ynab.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> 
+# SAS Mastercard Import
+node bin/sas-master-to-ynab.js \ 
+    <12-digit personummer> \ 
+    <Ynab Access Token> \ 
+    <Ynab Budget Id> \
+    <Ynab Account Id> 
+    
+# Nordea Import 
+node bin/nordea-to-ynab.js \
+    <12-digit personummer> \
+    <Ynab Access Token> \
+    <Ynab Budget Id> \
+    <Ynab Account Id> \
+    <Start date with format YYYY-MM-DD>
+    
+### API
+node bin/api.js
 
-node bin/nordea-to-ynab.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Start date with format YYYY-MM-DD>
+# then, to test it
+curl localhost:5000 
 ```
 
 ## Requirements
