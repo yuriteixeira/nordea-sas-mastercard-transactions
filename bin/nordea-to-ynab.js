@@ -23,7 +23,7 @@ async function main() {
     const sourceTransactions = await getSourceTransactions(browser, personNumber)
     console.log(`${sourceTransactions.length} found in total`)
 
-    const filteredTransactions = await filterTransactionsNotSent(ynabApi, fromStartDateTransactions, budgetId, accountId, startDate)
+    const filteredTransactions = await filterTransactionsNotSent(ynabApi, sourceTransactions, budgetId, accountId, startDate)
     console.log(`${filteredTransactions.length} not yet sent`)
 
     const ynabPayload = await buildYnabPayload(filteredTransactions, accountId, allowSendAsCleared)
