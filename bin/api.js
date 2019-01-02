@@ -78,6 +78,7 @@ async function sendTransactionsToYnab(req, res) {
 
 function cors(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", req.header("Access-Control-Request-Headers"));
   next();
 }
