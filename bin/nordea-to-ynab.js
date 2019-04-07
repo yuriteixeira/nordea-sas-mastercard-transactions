@@ -70,7 +70,18 @@ function getOptions(rawArgs, env) {
 }
 
 function helpMessage() {
-  return 'Usage: node nordea-to-ynab.js <12-digit personummer> <Ynab Access Token> <Ynab Budget Id> <Ynab Account Id> <Date since in YYYY-MM-DD> (More info here: https://api.youneedabudget.com/)'
+  return "\n\nUsage: node nordea-to-ynab.js <arguments>" + 
+
+    "\n\nRequired arguments:" + 
+    "\n\t-p or --personNumber (fallbacks to PERSON_NUMBER env var): You 12-digit one" + 
+    "\n\t-a or --accessToken (fallbacks to YNAB_ACCESS_TOKEN env var): More info here: https://api.youneedabudget.com" + 
+    "\n\t-b or --budgetId (fallbacks to YNAB_BUDGET_ID env var): More info here: https://api.youneedabudget.com" + 
+    "\n\t-a or --accountId (fallbacks to YNAB_ACCOUNT_ID env var): More info here: https://api.youneedabudget.com" + 
+    "\n\t-d or --startDate: YYYY-MM-DD formated, only transactions from this date are fetched" + 
+
+    "\n\nOptional:" + 
+    "\n\t-n or --dryRun (fallbacks to YNAB_DRY_RUN): Only show transactions, nothing is sent to YNAB" + 
+    "\n"
 }
 
 async function addTransactionsToYnab(transactions, budgetId) {
