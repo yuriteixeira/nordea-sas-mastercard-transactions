@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer')
 const ynab = require('ynab')
 const adapter = require('../lib/nordea')
+const parseArgs = require('minimist')
 
 const { 
   getSourceTransactions, 
