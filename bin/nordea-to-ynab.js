@@ -22,12 +22,12 @@ async function main() {
     console.log('>>> Open BankID and authorise (30s to timeout)')
 
     const sourceTransactions = await getSourceTransactions(browser, personNumber)
-    console.log(`${sourceTransactions.length} found in total`)
-
     const filteredTransactions = await filterTransactionsNotSent(ynabApi, sourceTransactions, budgetId, accountId, startDate)
-    console.log(`${filteredTransactions.length} not yet sent`)
 
     console.log(filteredTransactions)
+    console.log('')
+    console.log(`${sourceTransactions.length} found in total`)
+    console.log(`${filteredTransactions.length} qualified for the filter (date + not sent yet)`)
 
     if (dryRun) {
       console.log(`DRY RUN mode (nothing was sent)`)
