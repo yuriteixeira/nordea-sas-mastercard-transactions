@@ -15,7 +15,7 @@ let browser
 async function main() {
   try {
 
-    const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared } = getRequiredArgs(process.argv);
+    const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, verbose, dryRun } = getOptions(process.argv, process.env);
     const ynabApi = new ynab.API(accessToken)
 
     browser = await puppeteer.launch({ headless: true })
@@ -27,9 +27,14 @@ async function main() {
     const filteredTransactions = await filterTransactionsNotSent(ynabApi, sourceTransactions, budgetId, accountId, startDate)
     console.log(`${filteredTransactions.length} not yet sent`)
 
-    const ynabPayload = await buildYnabPayload(filteredTransactions, accountId, allowSendAsCleared)
     console.log(filteredTransactions)
 
+    if (dryRun) {
+      console.log(`DRY RUN mode (nothing was sent)`)
+      return
+    }
+
+    const ynabPayload = await buildYnabPayload(filteredTransactions, accountId, allowSendAsCleared)
     await ynabApi.transactions.bulkCreateTransactions(budgetId, ynabPayload)
     console.log(`Added ${ynabPayload.transactions.length} transactions to YNAB`)
     
@@ -43,17 +48,25 @@ async function main() {
   }
 }
 
-function getRequiredArgs(args) {
-    const personNumber = args[2]
-    const accessToken = args[3]
-    const budgetId = args[4]
-    const accountId = args[5]
-    const startDate = args[6]
-    const allowSendAsCleared = !!args[7]
+function getOptions(rawArgs, env) {
+  const args = parseArgs(rawArgs)
+  const options = {
+    personNumber: args.p || args.personNumber || env.PERSON_NUMBER,
+    accessToken: args.t || args.accessToken || env.YNAB_ACCESS_TOKEN,
+    budgetId: args.b || args.budgetId || env.YNAB_BUDGET_ID,
+    accountId: args.a || args.accountId || env.YNAB_ACCOUNT_ID,
+    startDate: args.d || args.startDate,
+    allowSendAsCleared: args.c || args.allowSendAsCleared || env.YNAB_ALLOW_SEND_AS_CLEARED,
+    dryRun: args.n || args.dryRun || env.YNAB_DRY_RUN,
+    verbose: args.v || args.verbose || env.YNAB_VERBOSE,
+  }
+  
+  const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, dryRun, verbose } = options
+  const extras = verbose ? "\nArgs: " + JSON.stringify(args) + "\n" : ''
 
-    if (!personNumber || !accessToken || !budgetId || !accountId || !startDate) throw new Error(helpMessage())
+  if (!personNumber || !accessToken || !budgetId || !accountId || !startDate) throw new Error(helpMessage() + extras)
 
-    return { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared };
+  return options
 }
 
 function helpMessage() {
