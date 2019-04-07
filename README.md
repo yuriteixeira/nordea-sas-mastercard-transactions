@@ -15,7 +15,7 @@ This node script will fetch those transactions for you and send it to YNAB throu
 
 ## Before using...
 
-You will need to get your Ynab access token, account id and budget id.
+You will need to get your YNAB access token, account id and budget id.
 See how to get those here: https://api.youneedabudget.com
 
 ## Usage
@@ -24,22 +24,12 @@ See how to get those here: https://api.youneedabudget.com
 ### Checkout the repo, and inside your working dir, do:
 
 # first time only
-npm install 
 
-# SAS Mastercard Import
-node bin/sas-master-to-ynab.js \ 
-    <12-digit personummer> \ 
-    <Ynab Access Token> \ 
-    <Ynab Budget Id> \
-    <Ynab Account Id> 
-    
-# Nordea Import 
-node bin/nordea-to-ynab.js \
-    <12-digit personummer> \
-    <Ynab Access Token> \
-    <Ynab Budget Id> \
-    <Ynab Account Id> \
-    <Start date with format YYYY-MM-DD>
+npm install
+
+### CLI
+
+node bin/send-to-ynab.js <params, help msg has all the details>
     
 ### API
 node bin/api.js
