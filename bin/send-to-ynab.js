@@ -1,7 +1,9 @@
+const parseArgs = require('minimist')
+const args = parseArgs(process.argv)
+
+const adapter = require(`../lib/${args.s || args.source}`)
 const puppeteer = require('puppeteer')
 const ynab = require('ynab')
-const adapter = require('../lib/nordea')
-const parseArgs = require('minimist')
 
 const { 
   getSourceTransactions, 
@@ -51,6 +53,7 @@ async function main() {
 function getOptions(rawArgs, env) {
   const args = parseArgs(rawArgs)
   const options = {
+    source: args.s || args.source,
     personNumber: args.p || args.personNumber || env.PERSON_NUMBER,
     accessToken: args.t || args.accessToken || env.YNAB_ACCESS_TOKEN,
     budgetId: args.b || args.budgetId || env.YNAB_BUDGET_ID,
@@ -61,10 +64,10 @@ function getOptions(rawArgs, env) {
     verbose: args.v || args.verbose || env.YNAB_VERBOSE,
   }
   
-  const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, dryRun, verbose } = options
+  const { source, personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, dryRun, verbose } = options
   const extras = verbose ? "\nArgs: " + JSON.stringify(args) + "\n" : ''
 
-  if (!personNumber || !accessToken || !budgetId || !accountId || !startDate) throw new Error(helpMessage() + extras)
+  if (!source || !personNumber || !accessToken || !budgetId || !accountId || source === 'nordea' && !startDate) throw new Error(helpMessage() + extras)
 
   return options
 }
@@ -98,4 +101,5 @@ try {
 } catch (error) {
   console.error(error.message)
 }
+
 
