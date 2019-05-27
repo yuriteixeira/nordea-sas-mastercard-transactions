@@ -1,23 +1,21 @@
 const parseArgs = require('minimist')
-const args = parseArgs(process.argv)
-
-const adapter = require(`../lib/${args.s || args.source}`)
 const puppeteer = require('puppeteer')
 const ynab = require('ynab')
-
-const { 
-  getSourceTransactions, 
-  filterTransactionsSinceStartDate, 
-  filterTransactionsNotSent, 
-  buildYnabPayload 
-} = adapter
 
 let browser
 
 async function main() {
   try {
 
-    const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, verbose, dryRun } = getOptions(process.argv, process.env);
+    const { personNumber, accessToken, budgetId, accountId, startDate, allowSendAsCleared, verbose, dryRun, source } = getOptions(process.argv, process.env);
+    const adapter = require(`../lib/${source}`)
+    const {
+      getSourceTransactions,
+      filterTransactionsSinceStartDate,
+      filterTransactionsNotSent,
+      buildYnabPayload
+    } = adapter
+
     const ynabApi = new ynab.API(accessToken)
 
     browser = await puppeteer.launch({ headless: true })
@@ -42,7 +40,7 @@ async function main() {
     
   } catch (error) {
 
-    console.error(error.stack)
+    console.error(error.message)
 
   } finally {
 
@@ -73,9 +71,10 @@ function getOptions(rawArgs, env) {
 }
 
 function helpMessage() {
-  return "\n\nUsage: node nordea-to-ynab.js <arguments>" + 
+  return "Usage: node nordea-to-ynab.js <arguments>" + 
 
     "\n\nRequired arguments:" + 
+    "\n\t-s or --source: nordea or sas-master (check the lib folder to see supported vendors)" + 
     "\n\t-p or --personNumber (fallbacks to PERSON_NUMBER env var): You 12-digit one" + 
     "\n\t-a or --accessToken (fallbacks to YNAB_ACCESS_TOKEN env var): More info here: https://api.youneedabudget.com" + 
     "\n\t-b or --budgetId (fallbacks to YNAB_BUDGET_ID env var): More info here: https://api.youneedabudget.com" + 
@@ -83,8 +82,9 @@ function helpMessage() {
     "\n\t-d or --startDate: YYYY-MM-DD formated, only transactions from this date are fetched" + 
 
     "\n\nOptional:" + 
+    "\n\t-c or --allowSendAsCleared (fallbacks to YNAB_ALLOW_SEND_AS_CLEARED): Will send transactions as CLEARED, automagically" + 
     "\n\t-n or --dryRun (fallbacks to YNAB_DRY_RUN): Only show transactions, nothing is sent to YNAB" + 
-    "\n"
+    "\n\t-v or --verbose (fallbacks to YNAB_VERBOSE): Shows extra debug info"
 }
 
 async function addTransactionsToYnab(transactions, budgetId) {
@@ -101,5 +101,4 @@ try {
 } catch (error) {
   console.error(error.message)
 }
-
 
